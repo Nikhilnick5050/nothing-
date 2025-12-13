@@ -99,9 +99,7 @@
         }
         
         /* Floating animation */
-        .floating {
-            animation: floating 6s ease-in-out infinite;
-        }
+        
         
         @keyframes floating {
             0%, 100% { transform: translateY(0px); }
@@ -705,5 +703,75 @@
             });
         });
     </script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ===============================
+     PAGE INTRO ANIMATION
+  ================================ */
+  gsap.from("header", {
+    opacity: 0,
+    y: -60,
+    duration: 1.2,
+    ease: "power3.out"
+  });
+
+  /* ===============================
+     GLASS CARD SCROLL ANIMATION
+  ================================ */
+  const cards = document.querySelectorAll(".glass-card");
+
+  cards.forEach((card, index) => {
+    gsap.from(card, {
+      scrollTrigger: {
+        trigger: card,
+        start: "top 85%",
+        toggleActions: "play none none none"
+      },
+      opacity: 0,
+      y: 70 - index * 5,
+      duration: 1,
+      delay: index * 0.1,
+      ease: "power2.out"
+    });
+  });
+
+  /* ===============================
+     FLOATING LOGIC GATE TEXT
+     (Replaces CSS animation)
+  ================================ */
+  const floatingText = document.querySelectorAll(".floating");
+
+  floatingText.forEach((item, i) => {
+    gsap.to(item, {
+      y: -25,
+      duration: 3 + i,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      delay: i * 0.5
+    });
+  });
+
+  /* ===============================
+     SECTION HEADING REVEAL
+  ================================ */
+  gsap.utils.toArray("h2").forEach((heading) => {
+    gsap.from(heading, {
+      scrollTrigger: {
+        trigger: heading,
+        start: "top 90%"
+      },
+      opacity: 0,
+      y: 40,
+      duration: 0.8,
+      ease: "power2.out"
+    });
+  });
+
+});
+</script>
 </body>
 </html>
