@@ -773,5 +773,140 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ===============================
+     BIG INTRO TIMELINE
+  ================================ */
+  const intro = gsap.timeline();
+
+  intro
+    .from("body", {
+      opacity: 0,
+      duration: 0.5
+    })
+    .from("header i", {
+      scale: 0,
+      rotation: 360,
+      duration: 1,
+      ease: "back.out(1.7)"
+    })
+    .from("header h1 span", {
+      y: 100,
+      opacity: 0,
+      stagger: 0.2,
+      duration: 0.8,
+      ease: "power4.out"
+    })
+    .from(".typewriter", {
+      opacity: 0,
+      scale: 0.9,
+      duration: 0.6
+    });
+
+  /* ===============================
+     LOGIC GATE FLOATING (STRONG)
+  ================================ */
+  gsap.utils.toArray(".floating").forEach((el, i) => {
+    gsap.to(el, {
+      y: -60,
+      rotation: i % 2 === 0 ? 8 : -8,
+      duration: 2.5 + i,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+  });
+
+  /* ===============================
+     GLASS CARDS – FLY IN
+  ================================ */
+  gsap.utils.toArray(".glass-card").forEach((card, i) => {
+    gsap.from(card, {
+      scrollTrigger: {
+        trigger: card,
+        start: "top 90%",
+        end: "top 40%",
+        scrub: 1
+      },
+      x: i % 2 === 0 ? -150 : 150,
+      opacity: 0,
+      rotationY: 30,
+      scale: 0.8,
+      ease: "power3.out"
+    });
+  });
+
+  /* ===============================
+     FLIP CARDS – REAL 3D FLIP
+  ================================ */
+  gsap.utils.toArray(".flip-card").forEach((card) => {
+    card.addEventListener("mouseenter", () => {
+      gsap.to(card, {
+        rotationY: 180,
+        duration: 0.8,
+        ease: "power3.inOut"
+      });
+    });
+
+    card.addEventListener("mouseleave", () => {
+      gsap.to(card, {
+        rotationY: 0,
+        duration: 0.8,
+        ease: "power3.inOut"
+      });
+    });
+  });
+
+  /* ===============================
+     HEADINGS – BOUNCE REVEAL
+  ================================ */
+  gsap.utils.toArray("h2").forEach((heading) => {
+    gsap.from(heading, {
+      scrollTrigger: {
+        trigger: heading,
+        start: "top 95%"
+      },
+      y: 120,
+      opacity: 0,
+      scale: 0.7,
+      duration: 1,
+      ease: "elastic.out(1, 0.6)"
+    });
+  });
+
+  /* ===============================
+     ICON PULSE EFFECT
+  ================================ */
+  gsap.utils.toArray("i").forEach((icon) => {
+    gsap.to(icon, {
+      scale: 1.15,
+      duration: 1.2,
+      repeat: -1,
+      yoyo: true,
+      ease: "power1.inOut"
+    });
+  });
+
+  /* ===============================
+     BACKGROUND CIRCUIT LINES
+  ================================ */
+  gsap.utils.toArray(".circuit-line").forEach((line, i) => {
+    gsap.fromTo(line,
+      { width: "0%" },
+      {
+        width: "100%",
+        duration: 3 + i,
+        repeat: -1,
+        ease: "power1.inOut"
+      }
+    );
+  });
+
+});
+</script>
 </body>
 </html>
