@@ -99,7 +99,9 @@
         }
         
         /* Floating animation */
-        
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
         
         @keyframes floating {
             0%, 100% { transform: translateY(0px); }
@@ -336,6 +338,16 @@
                                 <p class="text-sm text-gray-400">Digital Electronics Project</p>
                             </div>
                         </div>
+                        <!-- Added Aditya Patil -->
+                        <div class="flex items-center p-3 rounded-lg bg-white/5 hover:bg-white/10 transition duration-300 smooth-hover">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-orange-500 to-red-600 flex items-center justify-center mr-3">
+                                <span class="font-bold">AP</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-dark-check">Aditya Patil</p>
+                                <p class="text-sm text-gray-400">Data Collector & Supporter</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -482,58 +494,106 @@
             // Create binary rain
             createBinaryRain();
             
-            // GSAP animations for cards
+            // GSAP animations
             gsap.registerPlugin(ScrollTrigger);
             
+            // Page intro animation
+            const intro = gsap.timeline();
+            
+            intro
+                .from("body", {
+                    opacity: 0,
+                    duration: 0.5
+                })
+                .from("header i", {
+                    scale: 0,
+                    rotation: 360,
+                    duration: 1,
+                    ease: "back.out(1.7)"
+                })
+                .from("header h1 span", {
+                    y: 100,
+                    opacity: 0,
+                    stagger: 0.2,
+                    duration: 0.8,
+                    ease: "power4.out"
+                })
+                .from(".typewriter", {
+                    opacity: 0,
+                    scale: 0.9,
+                    duration: 0.6
+                });
+            
+            // Floating animation for gate icons
+            gsap.utils.toArray('.floating').forEach((el, i) => {
+                gsap.to(el, {
+                    y: -60,
+                    rotation: i % 2 === 0 ? 8 : -8,
+                    duration: 2.5 + i,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut"
+                });
+            });
+            
             // Animate cards on scroll
-            gsap.utils.toArray('.glass-card').forEach(card => {
+            gsap.utils.toArray('.glass-card').forEach((card, i) => {
                 gsap.from(card, {
                     scrollTrigger: {
                         trigger: card,
-                        start: "top 80%",
-                        end: "bottom 20%",
-                        toggleActions: "play none none reverse"
+                        start: "top 90%",
+                        end: "top 40%",
+                        scrub: 1
                     },
-                    y: 50,
+                    x: i % 2 === 0 ? -150 : 150,
                     opacity: 0,
-                    duration: 1,
+                    rotationY: 30,
+                    scale: 0.8,
                     ease: "power3.out"
                 });
             });
             
-            // Animate header elements
-            gsap.from('header h1', {
-                duration: 1.5,
-                y: -50,
-                opacity: 0,
-                ease: "power3.out"
-            });
-            
-            gsap.from('header .typewriter', {
-                duration: 1,
-                delay: 1,
-                opacity: 0,
-                ease: "power3.out"
-            });
-            
-            // Floating animation for gate icons
-            gsap.utils.toArray('.floating').forEach((icon, i) => {
-                gsap.to(icon, {
-                    y: -20,
-                    duration: 3,
-                    repeat: -1,
-                    yoyo: true,
-                    ease: "sine.inOut",
-                    delay: i * 0.5
+            // Flip card hover animation
+            gsap.utils.toArray('.flip-card').forEach((card) => {
+                card.addEventListener('mouseenter', () => {
+                    gsap.to(card, {
+                        rotationY: 180,
+                        duration: 0.8,
+                        ease: "power3.inOut"
+                    });
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, {
+                        rotationY: 0,
+                        duration: 0.8,
+                        ease: "power3.inOut"
+                    });
                 });
             });
             
-            // Hover animation for team members
+            // Heading animations
+            gsap.utils.toArray('h2').forEach((heading) => {
+                gsap.from(heading, {
+                    scrollTrigger: {
+                        trigger: heading,
+                        start: "top 95%"
+                    },
+                    y: 120,
+                    opacity: 0,
+                    scale: 0.7,
+                    duration: 1,
+                    ease: "elastic.out(1, 0.6)"
+                });
+            });
+            
+            // Team member hover animation
             const teamMembers = document.querySelectorAll('.flex.items-center.p-3.rounded-lg');
             teamMembers.forEach(member => {
                 member.addEventListener('mouseenter', () => {
                     gsap.to(member, {
                         scale: 1.05,
+                        y: -5,
                         duration: 0.3,
                         ease: "power2.out"
                     });
@@ -542,6 +602,7 @@
                 member.addEventListener('mouseleave', () => {
                     gsap.to(member, {
                         scale: 1,
+                        y: 0,
                         duration: 0.3,
                         ease: "power2.out"
                     });
@@ -680,233 +741,13 @@
             }
         }
         
-        // Add keyboard shortcut for fun
-        document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && e.key === 'd') {
-                document.body.classList.toggle('debug');
-                alert('Debug mode toggled!');
-            }
-        });
-        
         // Initialize on window load
         window.addEventListener('load', function() {
             // Final check for dark mode
             if (!document.documentElement.classList.contains('dark')) {
                 document.documentElement.classList.add('dark');
             }
-            
-            // Add loading animation
-            gsap.from('body', {
-                opacity: 0,
-                duration: 1,
-                ease: "power2.out"
-            });
         });
     </script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  /* ===============================
-     PAGE INTRO ANIMATION
-  ================================ */
-  gsap.from("header", {
-    opacity: 0,
-    y: -60,
-    duration: 1.2,
-    ease: "power3.out"
-  });
-
-  /* ===============================
-     GLASS CARD SCROLL ANIMATION
-  ================================ */
-  const cards = document.querySelectorAll(".glass-card");
-
-  cards.forEach((card, index) => {
-    gsap.from(card, {
-      scrollTrigger: {
-        trigger: card,
-        start: "top 85%",
-        toggleActions: "play none none none"
-      },
-      opacity: 0,
-      y: 70 - index * 5,
-      duration: 1,
-      delay: index * 0.1,
-      ease: "power2.out"
-    });
-  });
-
-  /* ===============================
-     FLOATING LOGIC GATE TEXT
-     (Replaces CSS animation)
-  ================================ */
-  const floatingText = document.querySelectorAll(".floating");
-
-  floatingText.forEach((item, i) => {
-    gsap.to(item, {
-      y: -25,
-      duration: 3 + i,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut",
-      delay: i * 0.5
-    });
-  });
-
-  /* ===============================
-     SECTION HEADING REVEAL
-  ================================ */
-  gsap.utils.toArray("h2").forEach((heading) => {
-    gsap.from(heading, {
-      scrollTrigger: {
-        trigger: heading,
-        start: "top 90%"
-      },
-      opacity: 0,
-      y: 40,
-      duration: 0.8,
-      ease: "power2.out"
-    });
-  });
-
-});
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  /* ===============================
-     BIG INTRO TIMELINE
-  ================================ */
-  const intro = gsap.timeline();
-
-  intro
-    .from("body", {
-      opacity: 0,
-      duration: 0.5
-    })
-    .from("header i", {
-      scale: 0,
-      rotation: 360,
-      duration: 1,
-      ease: "back.out(1.7)"
-    })
-    .from("header h1 span", {
-      y: 100,
-      opacity: 0,
-      stagger: 0.2,
-      duration: 0.8,
-      ease: "power4.out"
-    })
-    .from(".typewriter", {
-      opacity: 0,
-      scale: 0.9,
-      duration: 0.6
-    });
-
-  /* ===============================
-     LOGIC GATE FLOATING (STRONG)
-  ================================ */
-  gsap.utils.toArray(".floating").forEach((el, i) => {
-    gsap.to(el, {
-      y: -60,
-      rotation: i % 2 === 0 ? 8 : -8,
-      duration: 2.5 + i,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut"
-    });
-  });
-
-  /* ===============================
-     GLASS CARDS – FLY IN
-  ================================ */
-  gsap.utils.toArray(".glass-card").forEach((card, i) => {
-    gsap.from(card, {
-      scrollTrigger: {
-        trigger: card,
-        start: "top 90%",
-        end: "top 40%",
-        scrub: 1
-      },
-      x: i % 2 === 0 ? -150 : 150,
-      opacity: 0,
-      rotationY: 30,
-      scale: 0.8,
-      ease: "power3.out"
-    });
-  });
-
-  /* ===============================
-     FLIP CARDS – REAL 3D FLIP
-  ================================ */
-  gsap.utils.toArray(".flip-card").forEach((card) => {
-    card.addEventListener("mouseenter", () => {
-      gsap.to(card, {
-        rotationY: 180,
-        duration: 0.8,
-        ease: "power3.inOut"
-      });
-    });
-
-    card.addEventListener("mouseleave", () => {
-      gsap.to(card, {
-        rotationY: 0,
-        duration: 0.8,
-        ease: "power3.inOut"
-      });
-    });
-  });
-
-  /* ===============================
-     HEADINGS – BOUNCE REVEAL
-  ================================ */
-  gsap.utils.toArray("h2").forEach((heading) => {
-    gsap.from(heading, {
-      scrollTrigger: {
-        trigger: heading,
-        start: "top 95%"
-      },
-      y: 120,
-      opacity: 0,
-      scale: 0.7,
-      duration: 1,
-      ease: "elastic.out(1, 0.6)"
-    });
-  });
-
-  /* ===============================
-     ICON PULSE EFFECT
-  ================================ */
-  gsap.utils.toArray("i").forEach((icon) => {
-    gsap.to(icon, {
-      scale: 1.15,
-      duration: 1.2,
-      repeat: -1,
-      yoyo: true,
-      ease: "power1.inOut"
-    });
-  });
-
-  /* ===============================
-     BACKGROUND CIRCUIT LINES
-  ================================ */
-  gsap.utils.toArray(".circuit-line").forEach((line, i) => {
-    gsap.fromTo(line,
-      { width: "0%" },
-      {
-        width: "100%",
-        duration: 3 + i,
-        repeat: -1,
-        ease: "power1.inOut"
-      }
-    );
-  });
-
-});
-</script>
 </body>
 </html>
